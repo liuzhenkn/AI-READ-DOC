@@ -1,0 +1,26 @@
+.baseModal {
+  margin: 0;
+}
+
+.baseModal :global(.ant-modal-content) {
+  padding: 0;
+}
+
+.baseModal :global(.ant-modal-header) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  height: 50px;
+  background: rgba(217, 237, 247, 1);
+  border: 1px solid rgba(188, 232, 241, 1)
+}
+
+.baseModal :global(.ant-modal-title) {
+  font-size: 16px;
+  color: #31708F;
+}
+
+.baseModal :global(.ant-modal-body) {
+  padding: 20px 30px;
+}

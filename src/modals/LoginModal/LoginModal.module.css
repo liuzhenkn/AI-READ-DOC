@@ -1,0 +1,14 @@
+.loginModalFooter {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.loginModalContent {
+  padding: 16px 0;
+}
+
+.loginModalContentText {
+  margin-bottom: 16px;
+  line-height: 1.5;
+  font-size: 14px;
+}

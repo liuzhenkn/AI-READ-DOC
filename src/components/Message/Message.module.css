@@ -1,0 +1,36 @@
+.robotMessage {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+
+.personMessage {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 30px;
+}
+
+.robotAvator,
+.personAvator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.robotAvator {
+  margin-right: 18px;
+  background: #93d2f4;
+}
+
+.personAvator {
+  margin-left: 18px;
+  background: #555;
+}
+
+.messageContent {
+  text-align: left;
+  color: #7f7f7f;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}

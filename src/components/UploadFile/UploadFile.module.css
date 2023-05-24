@@ -1,0 +1,10 @@
+.uploadHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  height: 50px;
+  color: #31708F;
+  background: rgba(217, 237, 247, 1);
+  border: 1px solid rgba(188, 232, 241, 1)
+}
