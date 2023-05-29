@@ -4,8 +4,8 @@ import { Outlet, useParams, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from "react-helmet";
 import { PlusCircleOutlined } from '@ant-design/icons';
-import LoginModal from '../../modals/LoginModal/LoginModal';
-import PriceModal from '../../modals/PriceModal/PriceModal';
+import LoginModal from 'modals/LoginModal/LoginModal';
+import PriceModal from 'modals/PriceModal/PriceModal';
 import { fetchUser, fetchHistory, fetchProducts, togglePriceModal, toggleLoginModal } from '../../stores/actions'
 import NotLogin from './components/NotLogin';
 import HistoryItem from './components/HistoryItem';
@@ -95,15 +95,21 @@ const Root = (props) => {
           </div>
         </Content>
       </Layout>
-      <LoginModal
-        open={loginModalVisible}
-        openPriceModal={() => props.togglePriceModal(true)}
-        onCancel={() => activeLoginModal(false)}
-      />
-      <PriceModal
-        open={priceModalVisible}
-        onCancel={() => props.togglePriceModal(false)}
-      />
+      {
+        loginModalVisible && 
+        <LoginModal
+          open={loginModalVisible}
+          openPriceModal={() => props.togglePriceModal(true)}
+          onCancel={() => activeLoginModal(false)}
+        />
+      }
+      {
+        priceModalVisible && 
+        <PriceModal
+          open={priceModalVisible}
+          onCancel={() => props.togglePriceModal(false)}
+        />
+      }
     </Layout>
   );
 }

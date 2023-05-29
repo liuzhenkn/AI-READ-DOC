@@ -3,8 +3,8 @@ import {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import { fetchHistory, toggleLoginModal, togglePriceModal } from '../../stores/actions';
 import http from '../../http';
-import UploadFile from '../../components/UploadFile/UploadFile';
-import Message from '../../components/Message/Message';
+import UploadFile from 'components/UploadFile/UploadFile';
+import Message from 'components/Message/Message';
 
 import styles from './index.module.css';
 

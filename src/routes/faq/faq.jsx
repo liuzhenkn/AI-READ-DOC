@@ -1,10 +1,10 @@
 import {useEffect, useState, useRef} from 'react';
 import { connect } from 'react-redux';
 import { togglePriceModal } from '../../stores/actions';
-import Message from '../../components/Message/Message';
+import Message from 'components/Message/Message';
 import getQuestions from './constant/questions';
 
-import styles from './faq.module.css';
+// import styles from './faq.module.css';
 
 const Faq = (props) => {
   const endRef = useRef(null)

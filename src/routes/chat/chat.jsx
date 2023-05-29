@@ -5,7 +5,7 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { Input, Space, Button } from 'antd';
 import http from '../../http';
 import { togglePriceModal } from '../../stores/actions';
-import Message from '../../components/Message/Message';
+import Message from 'components/Message/Message';
 import { getAskLimitMsg } from '../../constant/message';
 import styles from './chat.module.css';
 

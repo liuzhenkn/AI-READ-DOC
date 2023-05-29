@@ -28,7 +28,7 @@ const LoginModal = (props) => {
 
   const onLogout = async () => {
     await http.post('/api/user/logout')
-    window.location.reload()
+    window.location.href = '/'
   }
 
   const onRegister = async () => {
@@ -45,9 +45,7 @@ const LoginModal = (props) => {
 
   const onChecked = () => {
     setWaiting(false)
-    props.fetchUser()
-    props.fetchHistory()
-    props.onCancel()
+    setLoginType('email')
   }
 
   const onUpgrade = () => {
@@ -167,7 +165,9 @@ const LoginModal = (props) => {
     if (waiting) {
       return (
         <div className={styles.loginModalContent}>
-          <div className={styles.loginModalContentText}>Please check your email to activate your account.</div>
+          <div className={styles.loginModalContentText}>
+            Please check your email to activate your account, and login again.
+          </div>
           <Button type="primary" onClick={onChecked}>Checked</Button>
         </div>
       )
