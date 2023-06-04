@@ -28,4 +28,4 @@ jobs:
           push: true
           tags: user/app:latest
           secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.BKFTOKEN }}
+            GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
