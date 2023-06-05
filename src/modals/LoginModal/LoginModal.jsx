@@ -43,6 +43,11 @@ const LoginModal = (props) => {
     location.replace(res?.oauth_url)
   }
 
+  const onGoogleLogin = async () => {
+    const res = await http.get('/api/oauth/google_login')
+    location.replace(res?.oauth_url)
+  }
+
   const onChecked = () => {
     setWaiting(false)
     setLoginType('email')
@@ -124,7 +129,7 @@ const LoginModal = (props) => {
           <div className={styles.loginModalContentText}>Hey, you are not login, login with</div>
           <Button type="primary" style={{marginRight: 10}} onClick={() => setLoginType('email')}>Email</Button>
           <Button type="primary" style={{marginRight: 10}} onClick={onFacebookLogin}>Facebook</Button>
-          <Button type="primary" onClick={onFacebookLogin}>Google</Button>
+          <Button type="primary" onClick={onGoogleLogin}>Google</Button>
         </div>
       )
     }

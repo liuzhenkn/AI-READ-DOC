@@ -39,7 +39,7 @@ const Index = (props) => {
                 <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. I can support pdf, ppt, docx, jpg|png, mp3, etc. Just upload the documents and ask me anything. I will try my best to answer your question. Highly recommend <span className="active" onClick={() => props.toggleLoginModal(true)}>Sign in</span> Firstly, the doc history will be saved for you.</div>
               )
             }
-            <UploadFile indexInfo={indexInfo} fetchHistory={props.fetchHistory} />
+            <UploadFile isVip={isVip} indexInfo={indexInfo} fetchHistory={props.fetchHistory} />
           </>
         )
       },

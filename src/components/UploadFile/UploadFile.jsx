@@ -9,11 +9,13 @@ const { Dragger } = Upload;
 
 const UploadFile = (props) => {
   const navigate = useNavigate();
-  const { indexInfo } = props;
+  const { indexInfo, isVip } = props;
   const { index_id: id, upload_token: token } = indexInfo
   const [fileList, setFileList] = useState([]);
+  const [uploading, setUploading] = useState(false)
 
   const handleChange = ({ fileList }) => {
+    setUploading(fileList.some(file => file.status === "uploading"))
     setFileList([...fileList]);
   };
 
@@ -30,7 +32,7 @@ const UploadFile = (props) => {
   });
 
   const beforeUpload = async (file) => {
-    if (!id) return false;
+    if (!id) return false
     file.url = token.dir + file.name;
     return file;
   };
@@ -43,20 +45,20 @@ const UploadFile = (props) => {
     http.post('/api/index/create', {index_id: id, index_name: name})
       .then(() => {
         props.fetchHistory()
-        navigate(`/chat/${id}?init=true`)
+        navigate(`/chat/${id}`)
       }).catch(x => x)
   }
 
   const uploadProps = {
     name: 'file',
-    multiple: true,
+    multiple: isVip,
     listType: "picture",
     style: {borderRadius: 0, borderTop: 'none'},
     accept: ".ppt,.docx,.jpg,.png,mp3,.pdf",
     action: token.host,
     fileList: fileList,
+    maxCount: !isVip ? 1 : 10,
     data: getExtraData,
-    // disabled: true,
     onChange: handleChange,
     onRemove,
     beforeUpload,
@@ -73,7 +75,13 @@ const UploadFile = (props) => {
         <p className="ant-upload-hint">
           Support Doc format: PDF, PPT, DOCX, JPG|PNG, MP3
         </p>
-        <Button type="primary" onClick={analysis} className={styles.uploadBtn}>Analysis</Button>
+        <Button type="primary"
+          disabled={!fileList?.length || uploading}
+          onClick={analysis}
+          className={styles.uploadBtn}
+        >
+          Analysis
+        </Button>
       </Dragger>
     </div>
   );

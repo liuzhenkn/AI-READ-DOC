@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { Input, Space, Button } from 'antd';
 import http from '../../http';
@@ -14,8 +14,7 @@ const Chat = (props) => {
   const [ messages, setMessages ] = useState([])
   const [ inputValue, setInputValue ] = useState('')
   const [ isChatting, setIsChatting ] = useState(false)
-  const searchParams = new URLSearchParams(window.location.search)
-  const isInit = searchParams.get('init') === 'true'
+  const navigate = useNavigate()
   const endRef = useRef(null)
 
   const init = async () => {
@@ -68,12 +67,24 @@ const Chat = (props) => {
   }
 
   const getMessages = async () => {
-    const res = await http.get(`/api/index/get?index_id=${id}`)
-    const {messages = []} = res || {}
-    setMessages(messages.map((item) => ({
-      ...item,
-      content: item.text
-    })))
+    if (!id) return
+    try {
+      const res = await http.get(`/api/index/get?index_id=${id}`)
+      const {messages = []} = res || {}
+      if (!messages.length) {
+        init() // 没有历史则说明是第一次进，调用init
+        return
+      }
+      setMessages(messages.map((item) => ({
+        ...item,
+        content: item.text
+      })))
+    } catch(err) {
+      const {data} = err || {}
+      if (data?.status?.code === 1001) {
+        navigate('/')
+      }
+    }
   }
 
   const sendMessage = async (content) => {
@@ -102,7 +113,6 @@ const Chat = (props) => {
       body: JSON.stringify({index_id: id, query: content}),
       signal: ctrl.signal,
       onmessage: (res) => {
-        console.log(res)
         if (res.data === '[DONE]') {
           setIsChatting(false)
           ctrl.abort()
@@ -148,11 +158,7 @@ const Chat = (props) => {
   }, [messages])
 
   useEffect(() => {
-    if (isInit && messages.length === 0) {
-      init()
-      return
-    }
-
+    setMessages([])
     getMessages()
   }, [id])
 
