@@ -20,6 +20,8 @@ RUN yarn build
 FROM nginx:latest
 COPY --from=0 /app/dist /usr/share/nginx/html
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Expose the default Nginx port
 EXPOSE 80
 
