@@ -27,3 +27,8 @@ jobs:
         with:
           push: true
           tags: bickeyff/aireaddoc:latest
+      -
+        name: Notify Server Deployment
+        uses: distributhor/workflow-webhook@v2
+        env:
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
