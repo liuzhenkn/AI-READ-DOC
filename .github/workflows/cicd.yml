@@ -31,5 +31,5 @@ jobs:
         name: Notify Server Deployment
         uses: distributhor/workflow-webhook@v2
         env:
-          webhook_url: ${{ secrets.WEBHOOK_URL }}
+          webhook_url: "http://47.251.5.255:8080"
           webhook_secret: "a secret"
