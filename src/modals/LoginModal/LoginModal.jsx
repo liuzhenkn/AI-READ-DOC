@@ -113,7 +113,7 @@ const LoginModal = (props) => {
       <div className={styles.loginModalContent}>
         <div className={styles.loginModalContentText}>{`Hey, ${user.email}, you are VIP Account now, all the features are unlocked.`}</div>
         <div className={styles.loginModalContentText}>The VIP will expire at {formatTime(user?.expires_at, 'DD/MM/YYYY')}.</div>
-        <Button type="link" onClick={onLogout}>Logout</Button>
+        <Button type="primary" onClick={onLogout}>Logout</Button>
       </div>
     )
   }

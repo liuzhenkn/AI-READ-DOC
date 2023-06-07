@@ -1,6 +1,7 @@
 import http from '../http'
 
 export const setUser = (user) => {
+  console.log(user?.plan?.type !== 'FREE')
   return {
     type: 'SET_USER',
     payload: {
