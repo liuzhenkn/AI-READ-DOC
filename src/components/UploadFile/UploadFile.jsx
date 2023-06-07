@@ -54,7 +54,7 @@ const UploadFile = (props) => {
     multiple: isVip,
     listType: "picture",
     style: {borderRadius: 0, borderTop: 'none'},
-    accept: ".ppt,.docx,.jpg,.png,mp3,.pdf",
+    accept: ".ppt,.docx,.jpg,.jpeg,.png,mp3,.pdf",
     action: token?.host,
     fileList: fileList,
     maxCount: !isVip ? 1 : 10,
@@ -74,7 +74,7 @@ const UploadFile = (props) => {
         </p>
         <p className="ant-upload-text">Click or drag file to this area to upload</p>
         <p className="ant-upload-hint">
-          Support Doc format: PDF, PPT, DOCX, JPG|PNG, MP3
+          Support Doc format: PDF, PPT, DOCX, JPG|JPEG|PNG, MP3
         </p>
         <Button type="primary"
           disabled={!indexInfo || !fileList?.length || uploading}
