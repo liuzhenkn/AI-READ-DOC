@@ -10,7 +10,7 @@ const { Dragger } = Upload;
 const UploadFile = (props) => {
   const navigate = useNavigate();
   const { indexInfo, isVip } = props;
-  const { index_id: id, upload_token: token } = indexInfo
+  const { index_id: id, upload_token: token } = indexInfo || {}
   const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false)
 
@@ -55,13 +55,14 @@ const UploadFile = (props) => {
     listType: "picture",
     style: {borderRadius: 0, borderTop: 'none'},
     accept: ".ppt,.docx,.jpg,.png,mp3,.pdf",
-    action: token.host,
+    action: token?.host,
     fileList: fileList,
     maxCount: !isVip ? 1 : 10,
     data: getExtraData,
     onChange: handleChange,
     onRemove,
     beforeUpload,
+    disabled: !indexInfo || uploading,
   };
 
   return (
@@ -76,7 +77,7 @@ const UploadFile = (props) => {
           Support Doc format: PDF, PPT, DOCX, JPG|PNG, MP3
         </p>
         <Button type="primary"
-          disabled={!fileList?.length || uploading}
+          disabled={!indexInfo || !fileList?.length || uploading}
           onClick={analysis}
           className={styles.uploadBtn}
         >

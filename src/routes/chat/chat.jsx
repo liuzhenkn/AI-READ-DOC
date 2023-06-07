@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { Input, Space, Button } from 'antd';
 import http from '../../http';
-import { togglePriceModal } from '../../stores/actions';
+import { toggleLoginModal, togglePriceModal } from '../../stores/actions';
 import Message from 'components/Message/Message';
 import { getAskLimitMsg } from '../../constant/message';
 import styles from './chat.module.css';
@@ -126,7 +126,9 @@ const Chat = (props) => {
 
         if (code === 1002) {
           setIsChatting(false)
-          setMessages([...newMessages, getAskLimitMsg(props.togglePriceModal)])
+          setMessages([...newMessages, getAskLimitMsg(
+            props.isLogin ? props.togglePriceModal : props.toggleLoginModal
+          )])
           return
         }
 
@@ -197,8 +199,11 @@ const Chat = (props) => {
 }
 
 export default connect(
-  () => ({}),
+  (state) => ({
+    isLogin: state.isLogin,
+  }),
   (dispatch) => ({
+    toggleLoginModal: (visible) => dispatch(toggleLoginModal(visible)),
     togglePriceModal: (visible) => dispatch(togglePriceModal(visible)),
   })
 )(Chat);

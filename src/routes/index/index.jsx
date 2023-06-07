@@ -20,7 +20,6 @@ const Index = (props) => {
   }, [])
 
   useEffect(() => {
-    if (!indexInfo) return
     const {isVip, isLogin, user} = props
     setMessages([
       {
@@ -58,8 +57,6 @@ const Index = (props) => {
       }
     ])
   }, [indexInfo, props.isVip])
-
-  if (!indexInfo) return null
 
   return (
     <div style={{ padding: '30px 100px 0' }}>
