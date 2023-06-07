@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { connect } from 'react-redux';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { formatTime } from '../../utils/date';
 import { fetchUser, fetchHistory } from '../../stores/actions';
 import http from '../../http';
@@ -85,9 +86,9 @@ const LoginModal = (props) => {
           { pattern: regex.password, message: 'Password must contain case, digits, and special characters!' },
         ]}
       >
-        <Input
-          type="password"
+        <Input.Password
           placeholder="Password must contain case, digits, and special characters"
+          iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
         />
       </Form.Item>
       <div className={styles.loginModalFooter}>

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Button, Input, Form, message } from 'antd';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import http from '../../http';
 import regex from '../../utils/regex';
@@ -40,9 +41,9 @@ const ResetPassword = () => {
             { pattern: regex.password, message: 'Password must contain case, digits, and special characters!' },
           ]}
         >
-          <Input
-            type="password"
+          <Input.Password
             placeholder="Password must contain case, digits, and special characters"
+            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
         </Form.Item>
         <Form.Item
@@ -58,9 +59,9 @@ const ResetPassword = () => {
             }
           ]}
         >
-          <Input
-            type="password"
+          <Input.Password
             placeholder="Repeat your new password"
+            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
         </Form.Item>
         <div className={styles.formFooter}>
