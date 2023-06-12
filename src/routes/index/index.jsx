@@ -1,4 +1,3 @@
-import {Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import { fetchHistory, toggleLoginModal, togglePriceModal } from '../../stores/actions';
@@ -6,11 +5,29 @@ import http from '../../http';
 import UploadFile from 'components/UploadFile/UploadFile';
 import Message from 'components/Message/Message';
 
-import styles from './index.module.css';
-
 const Index = (props) => {
   const [indexInfo, setIndexInfo] = useState(null)
   const [messages, setMessages] = useState([])
+
+  const generateMessage = () => {
+    const {isVip, isLogin, user} = props
+
+    if (!isLogin) {
+      return (
+        <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. As an anonymous user, you have reached the daily limit of {user?.plan?.max_questions_per_day || 1} files today. We Highly recommend you <span className="active" onClick={() => props.toggleLoginModal(true)}>Signing in</span> and upgrading to VIP for extended usage limit.</div>
+      )
+    }
+
+    if (!isVip) {
+      return (
+        <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. As an anonymous user, you have reached the daily limit of {user?.plan?.max_questions_per_day || 1} files today. We Highly recommend you <span className="active" onClick={() => props.togglePriceModal(true)} >Upgrading</span> to VIP for extended usage limit.</div>
+      )
+    }
+
+    return (
+      <div style={{marginBottom: '25px'}}>Hey, {user?.email}, welcome back to AIReadDoc, you are Normal User now and daily upload number is limited. To unlock more features, see <span className="active" onClick={() => props.togglePriceModal(true)}>VIP intro</span>;</div>
+    )
+  }
 
   useEffect(() => {
     if (indexInfo) return
@@ -20,41 +37,22 @@ const Index = (props) => {
   }, [])
 
   useEffect(() => {
-    const {isVip, isLogin, user} = props
     setMessages([
       {
         role: 'system',
         type: 3,
         children: (
           <>
-            {
-              isLogin ? (
-                isVip ? (
-                  <div style={{marginBottom: '25px'}}>Hey, {user?.email}, you are VIP Account now, all the features are unlocked.</div>
-                ) : (
-                  <div style={{marginBottom: '25px'}}>Hey, {user?.email}, welcome back to AIReadDoc, you are Normal User now and daily upload number is limited. To unlock more features, see <span className="active" onClick={() => props.togglePriceModal(true)}>VIP intro</span>;</div>
-                )
-              ) : (
-                <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. I can support pdf, ppt, docx, jpg|png, mp3, etc. Just upload the documents and ask me anything. I will try my best to answer your question. Highly recommend <span className="active" onClick={() => props.toggleLoginModal(true)}>Sign in</span> Firstly, the doc history will be saved for you.</div>
-              )
-            }
-            <UploadFile isVip={isVip} indexInfo={indexInfo} fetchHistory={props.fetchHistory} />
+            {generateMessage()}
+            <UploadFile
+              indexInfo={indexInfo}
+              isVip={props.isVip}
+              fetchHistory={props.fetchHistory}
+              sizeLimit={props.user?.plan?.max_size_per_doc || 104857600}
+            />
           </>
         )
       },
-      {
-        role: 'system',
-        type: 3,
-        children: (
-          <>
-            <div style={{marginBottom: '25px'}}>If you want to know more about me, please see the link below:</div>
-            <div className={styles.links}>
-              <Link to="/faq">Frequently Asked Question</Link>
-              <Link to="/faq">Pricing</Link>
-            </div>
-          </>
-        )
-      }
     ])
   }, [indexInfo, props.isVip])
 

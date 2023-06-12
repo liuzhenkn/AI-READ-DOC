@@ -6,7 +6,6 @@ import { Input, Space, Button } from 'antd';
 import http from '../../http';
 import { toggleLoginModal, togglePriceModal } from '../../stores/actions';
 import Message from 'components/Message/Message';
-import { getAskLimitMsg } from '../../constant/message';
 import styles from './chat.module.css';
 
 const Chat = (props) => {
@@ -64,6 +63,25 @@ const Chat = (props) => {
         ctrl.abort()
       }
     })
+  }
+
+  const generateLimitMsg = () => {
+    const {isLogin} = props
+    if (!isLogin) {
+      return (
+        <>
+          <div>Oops! It seems you have reached your daily usage limit as an anonymous user.</div>
+          <div><span onClick={() => toggleLoginModal(true)} className="active">Signing in</span> and upgrade to VIP now to enjoy unlimited access and unlock all the benefits AiReadDoc has to offer.</div>
+        </>
+      )
+    }
+
+    return (
+      <>
+        <div>Oops! It seems you have reached your daily usage limit as an FREE user.</div>
+        <div><span onClick={() => togglePriceModal(true)} className="active">Upgrade</span> to VIP now to enjoy unlimited access and unlock all the benefits AiReadDoc has to offer.</div>
+      </>
+    )
   }
 
   const getMessages = async () => {
@@ -126,9 +144,11 @@ const Chat = (props) => {
 
         if (code === 1002) {
           setIsChatting(false)
-          setMessages([...newMessages, getAskLimitMsg(
-            props.isLogin ? props.togglePriceModal : props.toggleLoginModal
-          )])
+          setMessages([...newMessages, {
+            role: 'system',
+            type: 3,
+            children: (generateLimitMsg)
+          }])
           return
         }
 
@@ -201,6 +221,7 @@ const Chat = (props) => {
 export default connect(
   (state) => ({
     isLogin: state.isLogin,
+    isVip: state.isVip,
   }),
   (dispatch) => ({
     toggleLoginModal: (visible) => dispatch(toggleLoginModal(visible)),

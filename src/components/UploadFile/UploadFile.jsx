@@ -1,7 +1,7 @@
 import {useState} from 'react';
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Button } from 'antd';
+import { Upload, Popover, message} from 'antd';
 import http from '../../http';
 import styles from './UploadFile.module.css';
 
@@ -9,14 +9,31 @@ const { Dragger } = Upload;
 
 const UploadFile = (props) => {
   const navigate = useNavigate();
-  const { indexInfo, isVip } = props;
+  const { indexInfo, sizeLimit } = props;
   const { index_id: id, upload_token: token } = indexInfo || {}
   const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false)
 
+  // 这里有变动本来是可以上传多个文件，现在改成上传一个文件就解析，先简单改造
   const handleChange = ({ fileList }) => {
+    if (!fileList.length) {
+      setFileList([]);
+      return;
+    }
+
+    if (fileList[0].size > sizeLimit) return
+
     setUploading(fileList.some(file => file.status === "uploading"))
     setFileList([...fileList]);
+
+    if (fileList.some(file => file.status === "done")) {
+      const name = fileList[0].name.slice(0, fileList[0].name.lastIndexOf('.'));
+      http.post('/api/index/create', {index_id: id, index_name: name})
+        .then(() => {
+          props.fetchHistory()
+          navigate(`/chat/${id}`)
+        }).catch(x => x)
+    }
   };
 
   const onRemove = (file) => {
@@ -33,31 +50,23 @@ const UploadFile = (props) => {
 
   const beforeUpload = async (file) => {
     if (!id) return false
+    if (file.size > sizeLimit) {
+      message.error(`File size must be smaller than ${sizeLimit / (1024 * 1024)}MB!`);
+      return false;
+    }
     file.url = token.dir + file.name;
     return file;
   };
 
-  const analysis = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!fileList.length) return
-    const name = fileList[0].name.slice(0, fileList[0].name.lastIndexOf('.'));
-    http.post('/api/index/create', {index_id: id, index_name: name})
-      .then(() => {
-        props.fetchHistory()
-        navigate(`/chat/${id}`)
-      }).catch(x => x)
-  }
-
   const uploadProps = {
     name: 'file',
-    multiple: isVip,
+    multiple: false,
     listType: "picture",
     style: {borderRadius: 0, borderTop: 'none'},
     accept: ".ppt,.docx,.jpg,.jpeg,.png,mp3,.pdf",
     action: token?.host,
     fileList: fileList,
-    maxCount: !isVip ? 1 : 10,
+    maxCount: 1,
     data: getExtraData,
     onChange: handleChange,
     onRemove,
@@ -74,15 +83,20 @@ const UploadFile = (props) => {
         </p>
         <p className="ant-upload-text">Click or drag file to this area to upload</p>
         <p className="ant-upload-hint">
-          Support Doc format: PDF, PPT, DOCX, JPG|JPEG|PNG, MP3
+          Support Doc format: PDF, PPT, DOCX, JPG|JPEG|PNG{
+            <Popover
+              content={
+                <p style={{ maxWidth: '300px' }}>
+                  Please note that we will use OCR technology to extract text from the uploaded image for the purpose of your inquiry.
+                  Please ensure that the image you upload contains sufficient text.
+                </p>
+              }
+              title=""
+            >
+              <QuestionCircleOutlined style={{ marginLeft: '3px' }} />
+            </Popover>
+          }, MP3
         </p>
-        <Button type="primary"
-          disabled={!indexInfo || !fileList?.length || uploading}
-          onClick={analysis}
-          className={styles.uploadBtn}
-        >
-          Analysis
-        </Button>
       </Dragger>
     </div>
   );

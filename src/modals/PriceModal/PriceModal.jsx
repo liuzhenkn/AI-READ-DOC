@@ -45,7 +45,7 @@ const PriceMdoal = (props) => {
 
     const interval = setInterval(async () => {
       const res = await http.get(`/api/checkout/query?session_id=${orderId}`);
-      if (res.status === 'COMPLETE') {
+      if (res.status === 'complete') {
         setSuccess(res);
         clearInterval(interval);
         setOrderId(null);
@@ -53,7 +53,7 @@ const PriceMdoal = (props) => {
         return;
       }
 
-      if (res.status === 'EXPIRED') {
+      if (res.status === 'expired') {
         clearInterval(interval);
         message.error('Purchase failed, please try again later.');
       }
