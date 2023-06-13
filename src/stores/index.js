@@ -9,7 +9,8 @@ export const initialState = {
   loginModalVisible: false,
   priceModalVisible: false,
   isLogin: false,
-  isVip: false
+  isVip: false,
+  privileges: []
 }
 
 export const store = createStore(

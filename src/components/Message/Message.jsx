@@ -1,5 +1,10 @@
 import styles from './Message.module.css';
 
+const AVATOR_MAP = {
+  'user': styles.personAvator,
+  'user-question': styles.personQuestionAvator,
+}
+
 const Index = (props) => {
   const { role, type = 1, children, content } = props;
   const renderContent = () => {
@@ -28,7 +33,7 @@ const Index = (props) => {
 
   return (
     <div className={role !== 'user' ? styles.robotMessage : styles.personMessage}>
-      <div className={role !== 'user' ? styles.robotAvator : styles.personAvator} />
+      <div className={AVATOR_MAP[role] || styles.robotAvator} />
       {renderContent()}
     </div>
   );

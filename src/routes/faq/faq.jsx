@@ -13,7 +13,7 @@ const Faq = (props) => {
 
   const onQuestionClick = (question) => {
     messages.push({
-      role: 'user',
+      role: 'user-question',
       type: 1,
       content: question.title
     })

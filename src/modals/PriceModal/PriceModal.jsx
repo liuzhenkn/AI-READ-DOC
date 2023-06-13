@@ -92,6 +92,34 @@ const PriceMdoal = (props) => {
 
     return (
       <div className={styles.wrapper}>
+        <div className={styles.subTitle}>Compare Free and VIP Usage Limits:</div>
+        {
+          props.privileges?.length ? (
+            <div className={styles.table}>
+              <div className={styles.row}>
+                <div className={styles.col}></div>
+                <div className={styles.col}>Free</div>
+                <div className={styles.col}>VIP</div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>Files per Day</div>
+                <div className={styles.col}>{props.privileges?.[0].max_files_per_index}</div>
+                <div className={styles.col}>{props.privileges?.[1].max_files_per_index}</div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>File Size Limit</div>
+                <div className={styles.col}>{props.privileges?.[0].max_size_per_doc / (1024 * 1024)}MB</div>
+                <div className={styles.col}>{props.privileges?.[1].max_size_per_doc / (1024 * 1024)}MB</div>
+              </div>
+              <div className={styles.row}>
+                <div className={styles.col}>Questions per Day</div>
+                <div className={styles.col}>{props.privileges?.[0].max_questions_per_day}</div>
+                <div className={styles.col}>{props.privileges?.[1].max_questions_per_day}</div>
+              </div>
+            </div>
+          ) : null
+        }
+        <div className={styles.subTitle}>Upgrade to VIP Now!</div>
         <div className={styles.table}>
           {
             props.products.map((item) => (
@@ -104,7 +132,12 @@ const PriceMdoal = (props) => {
                 </div>
                 <div className={styles.col}>
                   <span className={styles.important}>
-                    ${item.discount_price}(original price: ${item.original_price})
+                    ${item.discount_price}
+                  </span>
+                </div>
+                <div className={styles.col}>
+                  <span className={styles.important}>
+                    {item.discount_ratio}% off
                   </span>
                 </div>
               </div>
@@ -131,7 +164,7 @@ const PriceMdoal = (props) => {
 
   return (
     <BaseModal
-      title="Purchase VIP Account"
+      title="Upgrade to VIP"
       width={600}
       {...props}
       destroyOnClose={true}
@@ -145,6 +178,7 @@ const PriceMdoal = (props) => {
 export default connect(
   (state) => ({
     products: state.products,
+    privileges: state.privileges,
     isVip: state.isVip
   }),
   (dispatch) => ({

@@ -56,3 +56,8 @@
   font-size: 24px;
   margin-right: 15px;
 }
+
+.subTitle {
+  margin: 20px 0;
+  font-weight: 500;
+}

@@ -11,7 +11,8 @@
 }
 
 .robotAvator,
-.personAvator {
+.personAvator,
+.personQuestionAvator {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -25,6 +26,11 @@
 
 .personAvator {
   margin-left: 18px;
+  background: #555;
+}
+
+.personQuestionAvator {
+  margin-right: 18px;
   background: #555;
 }
 

@@ -59,3 +59,15 @@ export const fetchProducts = () => {
     })
   }
 }
+
+export const fetchPrivileges = () => {
+  return async (dispatch) => {
+    const data = await http.get('/api/plan/list')
+    dispatch({
+      type: 'SET_PRIVILEGES',
+      payload: {
+        privileges: data
+      }
+    })
+  }
+}

@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet";
 import { PlusCircleOutlined } from '@ant-design/icons';
 import LoginModal from 'modals/LoginModal/LoginModal';
 import PriceModal from 'modals/PriceModal/PriceModal';
-import { fetchUser, fetchHistory, fetchProducts, togglePriceModal, toggleLoginModal } from '../../stores/actions'
+import { fetchUser, fetchHistory, fetchProducts, fetchPrivileges, togglePriceModal, toggleLoginModal } from '../../stores/actions'
 import NotLogin from './components/NotLogin';
 import HistoryItem from './components/HistoryItem';
 import styles from './root.module.css';
@@ -34,6 +34,7 @@ const Root = (props) => {
     props.fetchUser();
     props.fetchHistory();
     props.fetchProducts();
+    props.fetchPrivileges();
   }, []);
 
   const renderSideContent = () => {
@@ -127,6 +128,7 @@ export default connect(
     toggleLoginModal: (visible) => dispatch(toggleLoginModal(visible)),
     togglePriceModal: (visible) => dispatch(togglePriceModal(visible)),
     fetchHistory: () => dispatch(fetchHistory()),
-    fetchProducts: () => dispatch(fetchProducts())
+    fetchProducts: () => dispatch(fetchProducts()),
+    fetchPrivileges: () => dispatch(fetchPrivileges())
   })
 )(Root);

@@ -27,6 +27,11 @@ export default (state = {}, action) => {
         ...state,
         products: action.payload.products
       }
+    case 'SET_PRIVILEGES':
+      return {
+        ...state,
+        privileges: action.payload.privileges
+      }
     default:
       return state
   }
