@@ -1,12 +1,25 @@
 import http from '../http'
 
 export const setUser = (user) => {
+  if (user.login_status === 'expired') {
+    return {
+      type: 'SET_USER',
+      payload: {
+        user: user,
+        isLogin: true,
+        isVip: false,
+        isExpired: true
+      }
+    }
+  }
+
   return {
     type: 'SET_USER',
     payload: {
       user,
       isLogin: !!user?.email,
-      isVip: user?.plan?.type === 'INTERNAL'
+      isVip: user?.plan?.type === 'INTERNAL',
+      isExpired: false
     }
   }
 }

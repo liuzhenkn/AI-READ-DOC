@@ -8,3 +8,15 @@
   background: rgba(217, 237, 247, 1);
   border: 1px solid rgba(188, 232, 241, 1)
 }
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90px;
+}
+
+.loadingText {
+  margin-left: 10px;
+  font-size: 16px;
+}

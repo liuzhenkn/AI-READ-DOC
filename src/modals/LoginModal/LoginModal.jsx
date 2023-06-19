@@ -12,7 +12,7 @@ import regex from '../../utils/regex';
 const LoginModal = (props) => {
   const [form] = Form.useForm();
   const [forgetForm] = Form.useForm();
-  const { isLogin, user } = props;
+  const { isLogin, isExpired, user } = props;
   const [waiting, setWaiting] = useState(false);
   const [loginType, setLoginType] = useState('');
 
@@ -120,8 +120,19 @@ const LoginModal = (props) => {
   }
 
   const renderLogin = () => {
-    if(isLogin) {
+    if(isLogin && !isExpired) {
       return renderText()
+    }
+
+    if(isExpired && !loginType) {
+      return (
+        <div className={styles.loginModalContent}>
+          <div className={styles.loginModalContentText}>Hey {user.email}, your account is expired, please log in to continue this operation.</div>
+          <Button type="primary" style={{marginRight: 10}} onClick={() => setLoginType('email')}>Email</Button>
+          <Button type="primary" style={{marginRight: 10}} onClick={onFacebookLogin}>Facebook</Button>
+          <Button type="primary" onClick={onGoogleLogin}>Google</Button>
+        </div>
+      )
     }
 
     if (!loginType) {
@@ -193,6 +204,7 @@ export default connect(
   (state) => ({
     user: state.user,
     isLogin: state.isLogin,
+    isExpired: state.isExpired,
   }),
   (dispatch) => ({
     fetchHistory: () => dispatch(fetchHistory()),

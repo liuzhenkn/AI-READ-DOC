@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
+import {store} from "../stores";
 
 const ERROR_WHITE_LIST = [
   '/api/checkout/query',
@@ -17,8 +18,17 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(response => {
   const { data } = response
-  if (data.status?.code === 0) {
+  const { status } = data || {}
+  if (status?.code === 0) {
     return Promise.resolve(data.body)
+  } else if (status?.code === 1) {
+    store.dispatch({
+      type: 'TOGGLE_LOGIN_MODAL',
+      payload: {
+        loginModalVisible: true
+      }
+    })
+    return Promise.reject(response)
   } else {
     const requestPath = response.config.url.split('?')[0]
     if (ERROR_WHITE_LIST.includes(requestPath)) {

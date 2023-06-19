@@ -104,17 +104,23 @@ const PriceMdoal = (props) => {
               <div className={styles.row}>
                 <div className={styles.col}>Files per Day</div>
                 <div className={styles.col}>{props.privileges?.[0].max_files_per_index}</div>
-                <div className={styles.col}>{props.privileges?.[1].max_files_per_index}</div>
+                <div className={styles.col}>
+                  <span className={styles.important}>{props.privileges?.[1].max_files_per_index}</span>
+                </div>
               </div>
               <div className={styles.row}>
                 <div className={styles.col}>File Size Limit</div>
                 <div className={styles.col}>{props.privileges?.[0].max_size_per_doc / (1024 * 1024)}MB</div>
-                <div className={styles.col}>{props.privileges?.[1].max_size_per_doc / (1024 * 1024)}MB</div>
+                <div className={styles.col}>
+                  <span className={styles.important}>{props.privileges?.[1].max_size_per_doc / (1024 * 1024)}MB</span>
+                </div>
               </div>
               <div className={styles.row}>
                 <div className={styles.col}>Questions per Day</div>
                 <div className={styles.col}>{props.privileges?.[0].max_questions_per_day}</div>
-                <div className={styles.col}>{props.privileges?.[1].max_questions_per_day}</div>
+                <div className={styles.col}>
+                  <span className={styles.important}>{props.privileges?.[1].max_questions_per_day}</span>
+                </div>
               </div>
             </div>
           ) : null

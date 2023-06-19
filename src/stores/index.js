@@ -10,6 +10,7 @@ export const initialState = {
   priceModalVisible: false,
   isLogin: false,
   isVip: false,
+  isExpired: false,
   privileges: []
 }
 

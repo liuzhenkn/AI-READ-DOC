@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout ,Button } from 'antd';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ const { Content, Sider } = Layout;
 
 const Root = (props) => {
   const { id } = useParams();
+  const [userFetched, setUserFetched] = useState(false);
   const navigate = useNavigate();
   const { loginModalVisible, priceModalVisible, isLogin, user, history } = props;
   const activeLoginModal = (show) => {
@@ -31,10 +32,12 @@ const Root = (props) => {
 
   useEffect(() => {
     if (isLogin) return;
-    props.fetchUser();
-    props.fetchHistory();
-    props.fetchProducts();
-    props.fetchPrivileges();
+    props.fetchUser().then(() => {
+      setUserFetched(true);
+      props.fetchHistory();
+      props.fetchProducts();
+      props.fetchPrivileges();
+    }).catch(x => x);
   }, []);
 
   const renderSideContent = () => {
@@ -64,6 +67,8 @@ const Root = (props) => {
       </div>
     )
   }
+
+  if (!userFetched) return null;
 
   return (
     <Layout hasSider>

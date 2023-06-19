@@ -5,7 +5,8 @@ export default (state = {}, action) => {
         ...state,
         user: action.payload.user,
         isLogin: action.payload.isLogin,
-        isVip: action.payload.isVip
+        isVip: action.payload.isVip,
+        isExpired: action.payload.isExpired
       }
     case 'TOGGLE_LOGIN_MODAL':
       return {

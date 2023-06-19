@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
+// import { Typewriter } from 'react-simple-typewriter'
 import { fetchEventSource } from '@microsoft/fetch-event-source';
-import { Input, Space, Button } from 'antd';
+import { Input, Space, Button, Spin } from 'antd';
 import http from '../../http';
 import { toggleLoginModal, togglePriceModal } from '../../stores/actions';
 import Message from 'components/Message/Message';
@@ -29,7 +30,6 @@ const Chat = (props) => {
       body: JSON.stringify({index_id: id}),
       signal: ctrl.signal,
       onmessage: (res) => {
-        console.log(res)
         if (res.data === '[DONE]') {
           setIsChatting(false)
           ctrl.abort()
@@ -106,11 +106,20 @@ const Chat = (props) => {
   }
 
   const sendMessage = async (content) => {
-    if (!content) return
+    if (!content || isChatting) return
     const newMessages = [...messages]
     newMessages.push({
       content: content,
       role: 'user',
+      type: 1
+    })
+    newMessages.push({
+      content: (
+        <div>
+          <Spin size='smail' />
+        </div>
+      ),
+      role: 'system-loading',
       type: 1
     })
     setMessages(newMessages)
@@ -122,6 +131,7 @@ const Chat = (props) => {
     const ctrl = new AbortController();
     const msgLength = newMessages.length
     const next = [...newMessages]
+    // let message = ''
     setIsChatting(true)
     await fetchEventSource(`/api/chat`, {
       method: 'POST',
@@ -131,7 +141,18 @@ const Chat = (props) => {
       body: JSON.stringify({index_id: id, query: content}),
       signal: ctrl.signal,
       onmessage: (res) => {
+        // const current = next[msgLength - 1]
         if (res.data === '[DONE]') {
+          // current.content = <Typewriter
+          //   words={[message]}
+          //   loop={1}
+          //   typeSpeed={20}
+          //   onLoopDone={() => {
+          //     if (!endRef?.current) return
+          //     endRef.current.scrollIntoView({behavior: 'smooth'})
+          //   }}
+          // />
+          // setMessages([...next])
           setIsChatting(false)
           ctrl.abort()
           return
@@ -152,20 +173,20 @@ const Chat = (props) => {
           return
         }
 
-        if(!next[msgLength]) {
-          next.push(
-            {
-              content: content,
-              role: 'system',
-              type: 1
-            }
-          )
-          setMessages(next)
-        } else {
-          const current = next[msgLength]
-          current.content = current.content + content
-          setMessages([...next])
+        // if(current.role === 'system-loading') {
+        //   current.role = 'system'
+        //   message = content
+        // } else {
+        //   message = message + content
+        // }
+
+        // 方案一
+        const current = next[msgLength - 1]
+        current.content = current.role === 'system-loading' ? content : current.content + content
+        if(current.role === 'system-loading') {
+          current.role = 'system'
         }
+        setMessages([...next])
       },
       onerror(err) {
         console.log(err)
@@ -205,11 +226,11 @@ const Chat = (props) => {
             onPressEnter={(e) => sendMessage(e.target.value)}
             onChange={(e) => setInputValue(e.target.value)}
             value={inputValue}
-            disabled={isChatting}
           />
           <Button
             className={styles.chatBtn}
             type="primary"
+            disabled={isChatting}
             onClick={() => sendMessage(inputValue)}
           >Submit</Button>
         </Space.Compact>
