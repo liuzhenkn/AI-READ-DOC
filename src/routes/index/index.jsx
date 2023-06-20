@@ -16,13 +16,13 @@ const Index = (props) => {
 
     if (!isLogin) {
       return (
-        <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. As an anonymous user, you have reached the daily limit of {user?.plan?.max_questions_per_day || 1} files today. We Highly recommend you <span className="active" onClick={() => props.toggleLoginModal(true)}>Signing in</span> and upgrading to VIP for extended usage limit.</div>
+        <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. As an anonymous user, you have reached the daily limit of {user?.plan?.max_indexes_per_day || 1} files today. We Highly recommend you <span className="active" onClick={() => props.toggleLoginModal(true)}>Signing in</span> and upgrading to VIP for extended usage limit.</div>
       )
     }
 
     if (!isVip) {
       return (
-        <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. As a FREE user, you have reached the daily limit of {user?.plan?.max_questions_per_day || 1} files today. We Highly recommend you <span className="active" onClick={() => props.togglePriceModal(true)}>Upgrading</span> to VIP for extended usage limit.</div>
+        <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. As a FREE user, you have reached the daily limit of {user?.plan?.max_indexes_per_day || 1} files today. We Highly recommend you <span className="active" onClick={() => props.togglePriceModal(true)}>Upgrading</span> to VIP for extended usage limit.</div>
       )
     }
 
@@ -36,7 +36,7 @@ const Index = (props) => {
 
     if (!isLogin) {
       return (
-        <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. I can support pdf, ppt, docx, jpg|jpeg|png, mp3, etc. Just upload the documents and ask me anything. I will try my best to answer your question. Highly recommend <span className='active' onClick={() => props.toggleLoginModal()}>Signing in</span> Firstly.</div>
+        <div style={{marginBottom: '25px'}}>Hey, welcome to AIReadDoc, I can help you to fast understand, review and analysis the documents. I can support pdf, ppt, docx, jpg|jpeg|png, mp3, etc. Just upload the documents and ask me anything. I will try my best to answer your question. Highly recommend <span className='active' onClick={() => props.toggleLoginModal(true)}>Signing in</span> Firstly.</div>
       )
     }
 

@@ -71,7 +71,7 @@ const Chat = (props) => {
       return (
         <>
           <div>Oops! It seems you have reached your daily usage limit as an anonymous user.</div>
-          <div><span onClick={() => toggleLoginModal(true)} className="active">Signing in</span> and upgrade to VIP now to enjoy unlimited access and unlock all the benefits AiReadDoc has to offer.</div>
+          <div><span onClick={() => props.toggleLoginModal(true)} className="active">Signing in</span> and upgrade to VIP now to enjoy unlimited access and unlock all the benefits AiReadDoc has to offer.</div>
         </>
       )
     }
@@ -79,7 +79,7 @@ const Chat = (props) => {
     return (
       <>
         <div>Oops! It seems you have reached your daily usage limit as an FREE user.</div>
-        <div><span onClick={() => togglePriceModal(true)} className="active">Upgrade</span> to VIP now to enjoy unlimited access and unlock all the benefits AiReadDoc has to offer.</div>
+        <div><span onClick={() => props.togglePriceModal(true)} className="active">Upgrade</span> to VIP now to enjoy unlimited access and unlock all the benefits AiReadDoc has to offer.</div>
       </>
     )
   }
@@ -107,6 +107,7 @@ const Chat = (props) => {
 
   const sendMessage = async (content) => {
     if (!content || isChatting) return
+    setInputValue('')
     const newMessages = [...messages]
     newMessages.push({
       content: content,
@@ -123,7 +124,6 @@ const Chat = (props) => {
       type: 1
     })
     setMessages(newMessages)
-    setInputValue('')
     receiveMessage(content, newMessages)
   }
 
@@ -141,7 +141,8 @@ const Chat = (props) => {
       body: JSON.stringify({index_id: id, query: content}),
       signal: ctrl.signal,
       onmessage: (res) => {
-        // const current = next[msgLength - 1]
+        const current = next[msgLength - 1]
+
         if (res.data === '[DONE]') {
           // current.content = <Typewriter
           //   words={[message]}
@@ -165,11 +166,18 @@ const Chat = (props) => {
 
         if (code === 1002) {
           setIsChatting(false)
-          setMessages([...newMessages, {
-            role: 'system',
-            type: 3,
-            children: (generateLimitMsg)
-          }])
+          if (current.role === 'system-loading') {
+            current.role = 'system'
+            current.children = generateLimitMsg()
+            current.type = 3
+            setMessages([...next])
+          } else {
+            setMessages([...newMessages, {
+              role: 'system',
+              type: 3,
+              children: generateLimitMsg()
+            }])
+          }
           return
         }
 
@@ -181,7 +189,6 @@ const Chat = (props) => {
         // }
 
         // 方案一
-        const current = next[msgLength - 1]
         current.content = current.role === 'system-loading' ? content : current.content + content
         if(current.role === 'system-loading') {
           current.role = 'system'
