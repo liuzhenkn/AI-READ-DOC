@@ -28,7 +28,7 @@ jobs:
           push: true
           tags: bickeyff/aireaddoc:latest
       - 
-        name: multiple command
+        name: Deploy Test Env
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.HOST }}
@@ -36,7 +36,4 @@ jobs:
           password: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-              docker pull bickeyff/aireaddoc:latest
-              docker stop gallant_wing
-              docker rm gallant_wing
-              docker run -itd --name gallant_wing bickeyff/aireaddoc:latest
+              kubectl rollout restart  deployment aireaddoc-api-deployment -n test
