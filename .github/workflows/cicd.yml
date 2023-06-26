@@ -36,4 +36,5 @@ jobs:
           password: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-              kubectl rollout restart  deployment aireaddoc-api-deployment -n test
+            kubectl delete deployment aireaddoc-web-deployment -n test
+            kubectl apply -f /root/aireaddoc-k8s/test/web.yaml -n test
