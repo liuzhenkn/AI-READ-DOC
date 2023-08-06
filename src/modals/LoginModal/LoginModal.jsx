@@ -39,10 +39,10 @@ const LoginModal = (props) => {
     setWaiting(true)
   }
 
-  const onFacebookLogin = async () => {
-    const res = await http.get('/api/oauth/facebook_login')
-    location.replace(res?.oauth_url)
-  }
+  // const onFacebookLogin = async () => {
+  //   const res = await http.get('/api/oauth/facebook_login')
+  //   location.replace(res?.oauth_url)
+  // }
 
   const onGoogleLogin = async () => {
     const res = await http.get('/api/oauth/google_login')
@@ -129,7 +129,7 @@ const LoginModal = (props) => {
         <div className={styles.loginModalContent}>
           <div className={styles.loginModalContentText}>Hey {user.email}, your account is expired, please log in to continue this operation.</div>
           <Button type="primary" style={{marginRight: 10}} onClick={() => setLoginType('email')}>Email</Button>
-          <Button type="primary" style={{marginRight: 10}} onClick={onFacebookLogin}>Facebook</Button>
+          {/* <Button type="primary" style={{marginRight: 10}} onClick={onFacebookLogin}>Facebook</Button> */}
           <Button type="primary" onClick={onGoogleLogin}>Google</Button>
         </div>
       )
@@ -140,7 +140,7 @@ const LoginModal = (props) => {
         <div className={styles.loginModalContent}>
           <div className={styles.loginModalContentText}>Hey, you are not login, login with</div>
           <Button type="primary" style={{marginRight: 10}} onClick={() => setLoginType('email')}>Email</Button>
-          <Button type="primary" style={{marginRight: 10}} onClick={onFacebookLogin}>Facebook</Button>
+          {/* <Button type="primary" style={{marginRight: 10}} onClick={onFacebookLogin}>Facebook</Button> */}
           <Button type="primary" onClick={onGoogleLogin}>Google</Button>
         </div>
       )
